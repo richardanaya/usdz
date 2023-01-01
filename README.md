@@ -1,6 +1,6 @@
 # USDZ Rust Parser
 
-This project is meant to be a USDZ parser for the web.
+This project is meant to be a USDZ parser for the web projects written in WebAssembly.
 
 # How to create a USDZ file
 
