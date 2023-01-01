@@ -46,7 +46,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn it_works() {
+    fn basic_unzip() {
         let buffer = include_bytes!("test_usdz/basic.usdz").to_vec();
         let zip_file = parse_zip_file(&buffer);
         assert_eq!(zip_file.is_ok(), true);
@@ -54,7 +54,7 @@ mod tests {
 
     #[test]
     fn parse_usd() {
-        let buffer = include_bytes!("test_usdz/basic.usdz").to_vec();
+        let buffer = include_bytes!("./test_usdz/basic.usdz").to_vec();
         let zip_file = UsdzFile::parse(&buffer).unwrap();
         let files = zip_file.get_files();
         assert_eq!(files.len(), 1);
@@ -62,6 +62,27 @@ mod tests {
         assert_eq!(first_file, "basic/basic.usd");
         let file_data = zip_file.get_file_data(first_file).unwrap();
         let usd = Usd::parse(&file_data).unwrap();
-        assert_eq!(usd.nodes.len(), 1);
+        assert_eq!(usd.parts.len(), 2);
+        if let UsdPart::Comment(comment) = &usd.parts[0] {
+            assert_eq!(comment.0, "usda 1.0");
+        } else {
+            panic!("Expected comment");
+        }
+        if let UsdPart::Node(node) = &usd.parts[1] {
+            assert_eq!(node.name, "hello");
+            assert_eq!(node.kind, "Xform");
+            assert_eq!(node.properties.len(), 0);
+            assert_eq!(node.children.len(), 1);
+            if let UsdPart::Node(child) = &node.children[0] {
+                assert_eq!(child.name, "world");
+                assert_eq!(child.kind, "Sphere");
+                assert_eq!(child.properties.len(), 0);
+                assert_eq!(child.children.len(), 0);
+            } else {
+                panic!("Expected node");
+            }
+        } else {
+            panic!("Expected node");
+        }
     }
 }
