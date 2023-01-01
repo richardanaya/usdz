@@ -62,5 +62,6 @@ mod tests {
         assert_eq!(first_file, "basic/basic.usd");
         let file_data = zip_file.get_file_data(first_file).unwrap();
         let usd = Usd::parse(&file_data).unwrap();
+        assert_eq!(usd.nodes.len(), 1);
     }
 }
