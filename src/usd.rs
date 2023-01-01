@@ -3,11 +3,10 @@ use nom::bytes::complete::tag;
 use nom::{
     bytes::complete::take_till,
     bytes::complete::take_while,
-    character::complete::{alpha1, char, digit1},
+    character::complete::{alpha1, char},
     character::complete::{multispace0, multispace1},
-    combinator::{all_consuming, map, opt},
+    combinator::{map, opt},
     multi::many0,
-    sequence::{delimited, preceded, terminated, tuple},
     IResult,
 };
 
