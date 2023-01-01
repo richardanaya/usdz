@@ -16,9 +16,9 @@ pub struct LocalFileHeader {
     uncompressed_size: u32,
     file_name_length: u16,
     extra_field_length: u16,
-    file_name: String,
+    pub file_name: String,
     extra_field: Option<Vec<u8>>,
-    uncompressed_data: Option<Vec<u8>>,
+    pub uncompressed_data: Option<Vec<u8>>,
 }
 
 #[derive(Debug, PartialEq)]
@@ -278,7 +278,7 @@ pub enum ZipFilePart {
 
 #[derive(Debug, PartialEq)]
 pub struct ZipFile {
-    parts: Vec<ZipFilePart>,
+    pub parts: Vec<ZipFilePart>,
 }
 
 fn parse_zip_file_part(input: &[u8]) -> nom::IResult<&[u8], ZipFilePart> {
